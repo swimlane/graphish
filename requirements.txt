@@ -1,0 +1,4 @@
+requests
+oauthlib
+pendulum
+requests_oauthlib
