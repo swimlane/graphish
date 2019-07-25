@@ -7,7 +7,7 @@ from requests_oauthlib import OAuth2Session
 
 __AUTHORITY_URL__ = 'https://login.microsoftonline.com/{tenant}'
 __TOKEN_ENDPOINT__ = '/oauth2/v2.0/token'
-__API_VERSION__ = 'v1.0'
+__API_VERSION__ = 'beta'
 __BASE_URL__ = 'https://graph.microsoft.com'
 
 
@@ -97,6 +97,7 @@ class GraphConnector(object):
             client_secret=self.client_secret,
             scope=['https://graph.microsoft.com/.default']
         )
+        
         self.token = token['access_token']
         self.expiration = pendulum.from_timestamp(token['expires_at'])
         self.session.headers['Authorization'] = 'Bearer ' + self.token
