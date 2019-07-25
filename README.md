@@ -4,12 +4,18 @@ A Python package to search & delete messages from mailboxes in Office 365 using 
 
 ## Current Features
 
-    * Create new Search
-    * Update a Search
-    * Get Search Folder
-    * Get Search messages
-    * Delete Search
-    * Delete a Message
+    * Searching
+        * Create new Search
+        * Update a Search
+        * Get Search Folder
+        * Get Search messages
+        * Delete Search
+    * Deleting
+        * Delete a Message
+    * Mailbox Rules
+        * List Mailbox Rules
+    * Users
+        * Return a list of email addresses in your Azure AD Tenant
 
 ## Installation
 
@@ -42,6 +48,10 @@ pip install graphish
 To use, you will need to have created a new application in Azure AD.  Follow these instructions to obtain the appropriate secrets:
 
 https://docs.microsoft.com/en-us/graph/auth-register-app-v2
+
+Please also checkout this blog post about `graphish` [https://swimlane.com/blog/swimlane-open-sources-graphish/](https://swimlane.com/blog/swimlane-open-sources-graphish/)
+
+Additionally, if you would like `graphish` to search all users within your Azure tenant you need to provide `User.Read.All` permissions to your Azure AD application during registration.
 
 Once you have this information, then you can do the following:
 
@@ -90,7 +100,7 @@ connector = GraphConnector(
 
 To use `graphish` with application permissions you will need to supply the clientId, clientSecret, and tenantId.
 
-By using the application authentication (Client Credentials Grant Auth Flow) you can search your own mailbox by not passing a `userPrincipalName` or if you would like to search another mailbox then provide the `userPrincipalName` (e-mail address):
+By using the application authentication (Client Credentials Grant Auth Flow) you can search a specific mailbox or ALL mailboxes. 
 
 #### Creating a connector for your account using a service/daemon authentication flow:
 
@@ -115,14 +125,21 @@ connector = GraphConnector(
     clientId='14b8e5asd-c5a2-4ee7-af26-53461f121eed',       # you applications clientId
     clientSecret='OdhG1hXb*UB/ho]A?0ZCci13KMflsHDy',        # your applications clientSecret
     tenantId='c1141d00-072f-1eb9-2526-12802571dd41',        # your applications Azure Tenant ID
-    userPrincipalName='some.account@myorg.onmicrosoft.com'  # the user's mailbox you want to search
-    scopes=['https://graph.microsoft.com/Mail.ReadWrite']   # the scopes (default value of https://graph.microsoft.com/.default)
+    scopes=['https://graph.microsoft.com/.default']         # the scopes (default value of https://graph.microsoft.com/.default)
 )
 ```
 
 ### Creating a new Search
 
-Once you have determined your appropriate authentication and have created a `GraphConnector` object, then you can create a new `Search` Object.  Once you have your `Search` Object then you can create a new search.  This will create a hidden folder in the users mailbox (that the user is unable to see) and it will populate based on your search filterQuery.  
+Once you have determined your appropriate authentication and have created a `GraphConnector` object, then you can create a new `Search` Object.  Once you have your `Search` Object then you can create a new search, retrieve messages from your search, get search folders, update a search folder, or delete a search.  When you create a new search, this will create a hidden folder in the users mailbox (that the user is unable to see) and it will populate based on your search filterQuery.  
+
+When you create (or instantiate) a `Search` object you can specify the scope of your search. There are three use-cases related to specifying a search:
+
+- Provide a user principal name to the `userPrincipalName` parameter on the `Search` class
+- Provide 'me' to the `userPrincipalName` parameter on the `Search` class when you are using username and password authentication workflow
+- **DEFAULT**: Provide no value to the `userPrincipalName` parameter on the `Search` class.  This will pull in all users within your Azure AD via the ListUsers endpoint.
+
+**NOTE: If using application authentication workflow, you can either pass in a single or list of  userPrincipalName's.  If you DO NOT pass in a userPrincipalName then Search will attempt to search all mailboxes in your Azure AD tenant!**
 
 ```python
 from graphish import Search
@@ -154,6 +171,16 @@ If you are needing a list of mail folders in a mailbox you can use the `folders`
 search.folders()
 ```
 
+
+### Getting a list of users
+
+If you are needing a list of all users within your search scope:
+
+```python
+# get a list of users
+search.user
+```
+
 ### Updating a search
 
 If you wanted to make changes to a search performed you can update the search folder and individual criteria like the name of the search folder, the sourceFolder (root to search), or the filterQuery itself:
@@ -175,6 +202,22 @@ You can also delete a search performed by using the `delete` method:
 # delete the current search folder
 search.delete()
 ```
+
+### List Mailbox Rules
+
+Additionally, you can list any mailbox rules:
+
+```python
+from graphish import Rules
+
+rules = Rules(
+    connector,
+    userPrincipalName='some.account@myorg.onmicrosoft.com'
+)
+
+print(rules.get())
+```
+
 
 ### Additional Examples
 
