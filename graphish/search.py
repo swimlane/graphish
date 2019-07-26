@@ -28,7 +28,6 @@ class Search(object):
         else:
             self.user = 'users/%s' % userPrincipalName
         
-
         self.includeNestedFolders = includeNestedFolders
 
     def _get_folder_id(self, user):
@@ -109,7 +108,8 @@ class Search(object):
                 }
                 response = self.connector.invoke('POST', uri, data=body)
                 return_list.append({user: response.json()})
-                folder_id_list.append({user: response.json()['id']})
+                if 'id' in response.json():
+                    folder_id_list.append({user: response.json()['id']})
             self.folderId = folder_id_list
             return return_list
         else:
@@ -122,7 +122,8 @@ class Search(object):
                 "filterQuery": filterQuery
             }
             response = self.connector.invoke('POST', uri, data=body)
-            self.folderId = [{self.user: response.json()['id']}]
+            if 'id' in response.json():
+                self.folderId = [{self.user: response.json()[u'id']}]
             return [response.json()]
 
     def update(self, searchFolderName=None, sourceFolder=None, filterQuery=None):
@@ -143,7 +144,8 @@ class Search(object):
                 body['includeNestedFolders'] ='%s' % self.includeNestedFolders
 
                 response = self.connector.invoke('POST', uri, data=body)
-                folder_id_list.append({user: response.json()['id']})
+                if 'id' in response.json():
+                    folder_id_list.append({user: response.json()['id']})
                 return_list.append({user: response.json()})
             self.folderId = folder_id_list
             return return_list
@@ -161,7 +163,8 @@ class Search(object):
             body['includeNestedFolders'] ='%s' % self.includeNestedFolders
 
             response = self.connector.invoke('POST', uri, data=body)
-            self.folderId = [{self.user: response.json()['id']}]
+            if 'id' in response.json():
+                self.folderId = [{self.user: response.json()['id']}]
             return [response.json()]
 
 
