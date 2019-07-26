@@ -108,8 +108,8 @@ class Search(object):
                 }
                 response = self.connector.invoke('POST', uri, data=body)
                 return_list.append({user: response.json()})
-                if 'id' in response.json():
-                    folder_id_list.append({user: response.json()['id']})
+                if u'id' in response.json():
+                    folder_id_list.append({user: response.json()[u'id']})
             self.folderId = folder_id_list
             return return_list
         else:
@@ -122,7 +122,7 @@ class Search(object):
                 "filterQuery": filterQuery
             }
             response = self.connector.invoke('POST', uri, data=body)
-            if 'id' in response.json():
+            if u'id' in response.json():
                 self.folderId = [{self.user: response.json()[u'id']}]
             return [response.json()]
 
@@ -144,8 +144,8 @@ class Search(object):
                 body['includeNestedFolders'] ='%s' % self.includeNestedFolders
 
                 response = self.connector.invoke('POST', uri, data=body)
-                if 'id' in response.json():
-                    folder_id_list.append({user: response.json()['id']})
+                if u'id' in response.json():
+                    folder_id_list.append({user: response.json()[u'id']})
                 return_list.append({user: response.json()})
             self.folderId = folder_id_list
             return return_list
@@ -163,8 +163,8 @@ class Search(object):
             body['includeNestedFolders'] ='%s' % self.includeNestedFolders
 
             response = self.connector.invoke('POST', uri, data=body)
-            if 'id' in response.json():
-                self.folderId = [{self.user: response.json()['id']}]
+            if u'id' in response.json():
+                self.folderId = [{self.user: response.json()[u'id']}]
             return [response.json()]
 
 
