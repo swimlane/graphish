@@ -6,7 +6,7 @@ def parse_requirements(requirement_file):
 
 setup(
     name='graphish',
-    version='1.1.1',
+    version='1.1.2',
     packages=find_packages(exclude=['tests*']),
     license='MIT',
     description='A Python package to search & delete emails using Microsoft Graph API',
