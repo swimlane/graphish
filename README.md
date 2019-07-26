@@ -159,7 +159,11 @@ You can retrieve messages identified during your search by using the same instan
 
 ```python
 # get all the messages in your search folder
-print(search.messages())
+
+for message in search.messages():
+    print(message) # Returns all attributes from a message
+    print(message['id']) # returns the message ID
+    print(message['headers']) # Returns the RFC822 headers of the message
 ```
 
 ### Getting a list of mail folders

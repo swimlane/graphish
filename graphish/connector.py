@@ -7,7 +7,7 @@ from requests_oauthlib import OAuth2Session
 
 __AUTHORITY_URL__ = 'https://login.microsoftonline.com/{tenant}'
 __TOKEN_ENDPOINT__ = '/oauth2/v2.0/token'
-__API_VERSION__ = 'beta'
+__API_VERSION__ = 'v1.0'
 __BASE_URL__ = 'https://graph.microsoft.com'
 
 
