@@ -1,4 +1,4 @@
-# graphish
+# Welcome to graphish documentation!
 
 ```
                        _     _     _     
@@ -10,8 +10,8 @@
   __/ |         | |                      
  |___/          |_|                      
 
-```
 A Python package to search & delete messages from mailboxes in Office 365 using Microsoft Graph API
+```
 
 ## Current Features
 
