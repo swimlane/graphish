@@ -1,5 +1,16 @@
 # graphish
 
+```
+                       _     _     _     
+                      | |   (_)   | |    
+  __ _ _ __ __ _ _ __ | |__  _ ___| |__  
+ / _` | '__/ _` | '_ \| '_ \| / __| '_ \ 
+| (_| | | | (_| | |_) | | | | \__ \ | | |
+ \__, |_|  \__,_| .__/|_| |_|_|___/_| |_|
+  __/ |         | |                      
+ |___/          |_|                      
+
+```
 A Python package to search & delete messages from mailboxes in Office 365 using Microsoft Graph API
 
 ## Current Features
