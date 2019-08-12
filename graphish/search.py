@@ -71,11 +71,13 @@ class Search(object):
                         user
                     )
                 message_dict = {}
-                for prop, value in vars(message_obj).iteritems():
-                    message_dict.update({prop:value})
+                for item in dir(message_obj):
+                    if not item.startswith('_') or not item.endswith('_'):
+                        message_dict.update({
+                            item: getattr(message_obj, item)
+                        })
                 message_list.append(message_dict)
         return message_list
-
 
     def create(self, searchFolderName, sourceFolder, filterQuery):
         return_list = []
@@ -94,11 +96,11 @@ class Search(object):
                 "filterQuery": filterQuery
             }
             response = self.connector.invoke('POST', uri, data=body)
-            if u'id' in response.json():
+            if response.json().get('error'):
+                raise AssertionError('Error when creating search folder:{}'.format(response.json()))
+            else:
                 folder_id_list.append({user: response.json()[u'id']})
                 return_list.append({user: response.json()})
-            else:
-                raise AssertionError('The response when creating a search contains no id property')
         self.folderId = folder_id_list
         return return_list
 
