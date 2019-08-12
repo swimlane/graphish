@@ -16,6 +16,10 @@ A Python package to search & delete messages from mailboxes in Office 365 using 
         * List Mailbox Rules
     * Users
         * Return a list of email addresses in your Azure AD Tenant
+    * MailFolder
+        * Create MailFolder
+        * Move message to a MailFolder
+        * List messages in a MailFolder
 
 ## Installation
 
@@ -185,6 +189,52 @@ If you are needing a list of all users within your search scope:
 search.user
 ```
 
+### Moving a message to a folder
+
+If you have performed a search and want to move a message to a mail folder, you can do so by doing the following:
+
+```python
+from graphish import Search
+from graphish import GraphConnector
+from graphish import MailFolder
+
+
+connector = GraphConnector(
+    clientId='14b8e5asd-c5a2-4ee7-af26-53461f121eed',       # you applications clientId
+    clientSecret='OdhG1hXb*UB/ho]A?0ZCci13KMflsHDy',        # your applications clientSecret
+    tenantId='c1141d00-072f-1eb9-2526-12802571dd41'         # your applications Azure Tenant ID
+)
+
+search = Search(connector, userPrincipalName='some.account@myorg.onmicrosoft.com')
+
+new_search = search.create(
+    searchFolderName='Phishing Search',
+    sourceFolder='inbox',
+    filterQuery="contains(subject, 'phishing')"
+)
+
+messages = search.messages()
+for message in messages:
+    print(message['internetMessageId'])
+    print(message['fromAddress'])
+    print(message['id'])
+    mail_folder = MailFolder(connector,'some.account@myorg.onmicrosoft.com')
+    moved_message = mail_folder.move_message(message['id'],'junkemail')
+    print(moved_message)
+
+```
+
+### Creating a new MailFolder
+
+You can also create a new `MailFolder` using the `MailFolder` class:
+
+```python
+from graphish import MailFolder
+
+mail_folder = MailFolder(connector,'some.account@myorg.onmicrosoft.com')
+new_mail_folder = mail_folder.create('My Phishing Folder')['id']
+```
+
 ### Updating a search
 
 If you wanted to make changes to a search performed you can update the search folder and individual criteria like the name of the search folder, the sourceFolder (root to search), or the filterQuery itself:
@@ -231,6 +281,8 @@ You can find additional examples [here](bin/graphish-example.py)
 
 * 1.0.0
    * Initial release of graphish to PyPi
+* 1.3.0
+   * Added capabilities to get all users and to move messages to a specified mailfolder
 
 ## Meta
 

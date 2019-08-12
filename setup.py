@@ -6,10 +6,10 @@ def parse_requirements(requirement_file):
 
 setup(
     name='graphish',
-    version='1.2.0',
+    version='1.3.0',
     packages=find_packages(exclude=['tests*']),
     license='MIT',
-    description='A Python package to search & delete emails using Microsoft Graph API',
+    description='A Python package to search & delete & move emails using Microsoft Graph API',
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
     install_requires=parse_requirements('./requirements.txt'),
