@@ -1,5 +1,6 @@
-from message import Message
-from users import Users
+from __future__ import absolute_import
+from .message import Message
+from .users import Users
 
 
 class Search(object):

@@ -1,4 +1,5 @@
-from users import Users
+from __future__ import absolute_import
+from .users import Users
 
 class Rules(object):
     """
