@@ -20,14 +20,14 @@ WELL_KNOWN_FOLDER_NAMES = [
 ]
 
 
-class MailFolder(object):
+class MailFolder:
 
     def __init__(self, graphConnector, userPrincipalName):
         self.connector = graphConnector
         if userPrincipalName == 'me':
             self.user = 'me/mailFolders'
         else:
-            self.user = 'users/{}/mailFolders'.format(userPrincipalName)
+            self.user = f'users/{userPrincipalName}/mailFolders'
 
     def create(self, folder_name):
         body = {
@@ -35,15 +35,11 @@ class MailFolder(object):
         }
         response = self.connector.invoke('POST', self.user, data=body)
         return response.json()
-
     
     def list_messages(self, folder_name):
         from message import Message
         return_list = []
-        uri = '{user}/{folder}/messages'.format(
-            user=self.user,
-            folder=folder_name
-        )
+        uri = f'{self.user}/{folder_name}/messages'
         response = self.connector.invoke('GET', uri)
         for message in response.json()['value']:
             message_obj = Message(
@@ -60,13 +56,8 @@ class MailFolder(object):
             return_list.append(message)
         return return_list
 
-
     def move_message(self, message_id, folder_name):
-        uri = '{user}/{folder}/messages/{msg_id}/move'.format(
-            user=self.user,
-            folder=folder_name,
-            msg_id=message_id
-        )
+        uri = f'{self.user}/{folder_name}/messages/{message_id}/move'
 
         body = {
             'destinationId': folder_name

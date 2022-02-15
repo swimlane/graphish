@@ -1,4 +1,5 @@
-import requests, pendulum
+import requests
+import pendulum
 
 from oauthlib.oauth2 import LegacyApplicationClient
 from oauthlib.oauth2 import BackendApplicationClient
@@ -55,10 +56,7 @@ class GraphConnector(object):
 
     @staticmethod
     def build_endpoint(uri):
-        url = '{base}/{api_v}/{uri}'.format(
-            base=__BASE_URL__, api_v=__API_VERSION__, uri=uri
-        )
-        return url
+        return f'{__BASE_URL__}/{__API_VERSION__}/{uri}'
 
     @property
     def token(self):

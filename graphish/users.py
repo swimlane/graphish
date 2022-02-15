@@ -1,6 +1,4 @@
-
-
-class Users(object):
+class Users:
     """
     This class allows you to retrieve all users within your organization.  Your Azure AD application will need to have the User.Read.All permissions granted for this application.
     """

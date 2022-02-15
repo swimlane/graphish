@@ -1,8 +1,8 @@
-from message import Message
-from users import Users
+from .message import Message
+from .users import Users
 
 
-class Search(object):
+class Search:
     """
     This class allows you to interact with and search mailboxes using Microsoft Graph API.
     """
@@ -49,9 +49,9 @@ class Search(object):
         for user in self.user:
             uri = ''
             if user == 'me':
-                uri = '%s/mailFolders/%s' % (self.user, self._get_folder_id(user))
+                uri = f'{self.user}/mailFolders/{self._get_folder_id(user)}'
             else:
-                uri = 'users/%s/mailFolders/%s' % (user, self._get_folder_id(user))
+                uri = f'users/{user}/mailFolders/{self._get_folder_id(user)}'
             return_list.append({user: self.connector.invoke('GET', uri).json()})
         return return_list
 
@@ -59,9 +59,9 @@ class Search(object):
         for user in self.user:
             uri = ''
             if user == 'me':
-                uri = '%s/mailFolders/%s/messages' % (user, self._get_folder_id(user))
+                uri = f'{user}/mailFolders/{self._get_folder_id(user)}/messages'
             else:
-                uri = 'users/%s/mailFolders/%s/messages' % (user, self._get_folder_id(user))
+                uri = f'users/{user}/mailFolders/{self._get_folder_id(user)}/messages'
             response = self.connector.invoke('GET', uri).json()
             message_list = []
             for message in response['value']:
@@ -85,14 +85,14 @@ class Search(object):
         for user in self.user:
             uri = ''
             if user == 'me':
-                uri = '%s/mailFolders/%s/childFolders' % (user, sourceFolder)
+                uri = f'{user}/mailFolders/{sourceFolder}/childFolders'
             else:
-                uri = 'users/%s/mailFolders/%s/childFolders' % (user, sourceFolder)
+                uri = f'users/{user}/mailFolders/{sourceFolder}/childFolders'
             body = {
                 "@odata.type": "microsoft.graph.mailSearchFolder",
-                "displayName": "%s" % searchFolderName,
-                "includeNestedFolders": '%s' % self.includeNestedFolders,
-                "sourceFolderIds": ["%s" % sourceFolder],
+                "displayName": f"{searchFolderName}",
+                "includeNestedFolders": f'{self.includeNestedFolders}',
+                "sourceFolderIds": [f"{sourceFolder}"],
                 "filterQuery": filterQuery
             }
             response = self.connector.invoke('POST', uri, data=body)
@@ -110,9 +110,9 @@ class Search(object):
         for user in self.user:
             uri = ''
             if user == 'me':
-                uri = '%s/mailFolders/%s' % (user, self._get_folder_id(user))
+                uri = f'{user}/mailFolders/{self._get_folder_id(user)}'
             else:
-                uri = 'users/%s/mailFolders/%s' % (user, self._get_folder_id(user))
+                uri = f'users/{user}/mailFolders/{self._get_folder_id(user)}'
             body = {}
             body['@odata.type'] = "microsoft.graph.mailSearchFolder"
             if searchFolderName:
@@ -121,7 +121,7 @@ class Search(object):
                 body['sourceFolderIds'] = sourceFolder
             if filterQuery:
                 body['filterQuery'] = filterQuery
-            body['includeNestedFolders'] ='%s' % self.includeNestedFolders
+            body['includeNestedFolders'] = f'{self.includeNestedFolders}'
 
             response = self.connector.invoke('POST', uri, data=body)
             if u'id' in response.json():
@@ -137,9 +137,9 @@ class Search(object):
         for user in self.user:
             uri = ''
             if user == 'me':
-                uri = '%s/mailFolders/%s' % (user, self._get_folder_id(user))
+                uri = f'{user}/mailFolders/{self._get_folder_id(user)}'
             else:
-                uri = 'users/%s/mailFolders/%s' % (user, self._get_folder_id(user))
+                uri = f'users/{user}/mailFolders/{self._get_folder_id(user)}'
             response = self.connector.invoke('DELETE', uri)
             return_list.append({user: response.json()})
         return return_list
