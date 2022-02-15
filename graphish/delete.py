@@ -1,6 +1,3 @@
-
-
-
 class Delete(object):
 
     def __init__(self, graphConnector, userPrincipalName='me'):
@@ -16,19 +13,19 @@ class Delete(object):
         """
         self.connector = graphConnector
         if userPrincipalName is not 'me':
-            self.user = 'users/%s' % userPrincipalName
+            self.user = f'users/{userPrincipalName}'
         else:
             self.user = userPrincipalName
 
     def delete(self, messageId):
-        uri = '%s/messages/%s' % (self.user, messageId)
+        uri = f'{self.user}/messages/{messageId}'
         response = self.connector.invoke('DELETE', uri)
         if response.status_code is '204':
             return True
         return False
 
     def delete_search_message(self, mailFolder, messageId):
-        uri = '%s/mailFolders/%s/messages/%s' % (self.user, mailFolder, messageId)
+        uri = f'{self.user}/mailFolders/{mailFolder}/messages/{messageId}'
         response = self.connector.invoke('DELETE', uri)
         if response.status_code is '204':
             return True

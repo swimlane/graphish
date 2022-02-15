@@ -1,4 +1,5 @@
-from users import Users
+from .users import Users
+
 
 class Rules(object):
     """
@@ -31,10 +32,10 @@ class Rules(object):
         return_list = []
         if isinstance(self.user, list):
             for user in self.user:
-                uri = 'users/%s/mailFolders/inbox/messageRules' % (user)
+                uri = f'users/{user}/mailFolders/inbox/messageRules'
                 return_list.append({user: self.connector.invoke('GET', uri).json()})
             return return_list
         else:
-            uri = '%s/mailFolders/inbox/messageRules' % (self.user)
+            uri = f'{self.user}/mailFolders/inbox/messageRules'
             return [{self.user: self.connector.invoke('GET', uri).json()}]
 

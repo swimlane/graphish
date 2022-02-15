@@ -5,7 +5,7 @@ class Message(object):
         if userPrincipalName == 'me':
             self.user = 'me'
         else:
-            self.user = 'users/{}'.format(userPrincipalName)
+            self.user = f'users/{userPrincipalName}'
         
         self.__message__ = messageObject
         self.headers = self._get_headers(messageObject['id'])
@@ -170,11 +170,7 @@ class Message(object):
 
     def _get_headers(self, messageId):
         extendedPropertyValue = 'String 0x7D'
-        uri = "{user}/messages/{message_id}?$expand=SingleValueExtendedProperties($filter=id eq '{extended_prop}')".format(
-            user=self.user,
-            message_id=messageId,
-            extended_prop=extendedPropertyValue
-        )
+        uri = f"{self.user}/messages/{messageId}?$expand=SingleValueExtendedProperties($filter=id eq '{extendedPropertyValue}')"
         response = self.connector.invoke('GET', uri)
         headers = response.json()
         for header in headers['singleValueExtendedProperties']:
