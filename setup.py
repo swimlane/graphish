@@ -6,7 +6,7 @@ def parse_requirements(requirement_file):
 
 setup(
     name='graphish',
-    version='1.3.0',
+    version='2.0.0',
     packages=find_packages(exclude=['tests*']),
     license='MIT',
     description='A Python package to search & delete & move emails using Microsoft Graph API',
@@ -17,5 +17,5 @@ setup(
     url='https://github.com/swimlane/graphish',
     author='Swimlane',
     author_email='info@swimlane.com',
-    python_requires='>=2.6, !=3.0.*, !=3.1.*, !=3.2.*, <4'
+    python_requires='>=3.6, <4'
 )
